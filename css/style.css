@@ -1,0 +1,297 @@
+/* Craigslist-style - matches NY homepage layout */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  color: #000;
+  background-color: #fff;
+  line-height: 1.4;
+}
+
+a {
+  color: #0000ff;
+  text-decoration: underline;
+}
+
+a:visited {
+  color: #551a8b;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Top header: logo | location + boroughs | faves post acct language */
+.topbar {
+  padding: 10px 16px;
+  background: #fff;
+  border-bottom: 1px solid #ddd;
+  font-size: 13px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.topbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  color: #000;
+  font-weight: bold;
+  font-size: 22px;
+}
+
+.topbar-logo:hover {
+  text-decoration: none;
+}
+
+.topbar-logo .logo-icon {
+  font-size: 24px;
+  color: #000;
+}
+
+.topbar-center {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.topbar-center .location-icon {
+  color: #0000ff;
+  font-size: 14px;
+}
+
+.topbar-center .location-name {
+  color: #000;
+  font-weight: bold;
+}
+
+.topbar-center .boroughs a {
+  margin: 0 2px;
+  font-size: 12px;
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.topbar-right .nav-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  text-decoration: none;
+  color: #0000ff;
+  font-size: 13px;
+}
+
+.topbar-right .nav-item.faves { color: #666; }
+.topbar-right .nav-item.post { color: #0a0; }
+.topbar-right .nav-item.acct { color: #000; }
+
+.topbar-right select {
+  font-size: 12px;
+  padding: 2px 4px;
+  border: 1px solid #ccc;
+  background: #fff;
+  color: #000;
+}
+
+/* Page layout: sidebar + main columns */
+.page-layout {
+  display: flex;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Left sidebar */
+.sidebar {
+  width: 220px;
+  min-width: 220px;
+  padding: 16px 12px 16px 16px;
+  border-right: 1px solid #eee;
+  flex-shrink: 0;
+}
+
+.btn-post-ad {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  background: #0a0;
+  color: #fff !important;
+  text-decoration: none !important;
+  font-weight: bold;
+  font-size: 14px;
+  border: none;
+  border-radius: 2px;
+  margin-bottom: 12px;
+  cursor: pointer;
+}
+
+.btn-post-ad:hover {
+  background: #080;
+  text-decoration: none !important;
+}
+
+.search-wrap {
+  margin-bottom: 14px;
+}
+
+.search-wrap input {
+  width: 100%;
+  padding: 8px 10px 8px 28px;
+  font-size: 13px;
+  border: 1px solid #ccc;
+  background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E") no-repeat 8px center;
+}
+
+.search-wrap input::placeholder {
+  color: #999;
+}
+
+.calendar-section {
+  margin-bottom: 14px;
+}
+
+.calendar-section h4 {
+  margin: 0 0 6px 0;
+  font-size: 13px;
+  font-weight: bold;
+  color: #000;
+}
+
+.calendar-section table {
+  border-collapse: collapse;
+  font-size: 12px;
+  width: 100%;
+}
+
+.calendar-section th,
+.calendar-section td {
+  padding: 4px 2px;
+  text-align: center;
+  border: none;
+}
+
+.calendar-section th {
+  font-weight: bold;
+  color: #000;
+}
+
+.calendar-section td a {
+  color: #0000ff;
+  text-decoration: none;
+}
+
+.calendar-section td a:hover {
+  text-decoration: underline;
+}
+
+.calendar-section td.today,
+.calendar-section td.today a {
+  background: #0a0;
+  color: #fff !important;
+  font-weight: bold;
+}
+
+.sidebar-links {
+  margin: 0;
+  padding-left: 18px;
+  list-style: disc;
+  font-size: 12px;
+}
+
+.sidebar-links li {
+  margin: 3px 0;
+}
+
+.sidebar-charitable {
+  margin-top: 14px;
+  font-size: 12px;
+}
+
+.sidebar-charitable a {
+  color: #0000ff;
+}
+
+/* Main content - 4 columns */
+.main-content {
+  flex: 1;
+  padding: 16px 20px 24px 20px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px 32px;
+  min-width: 0;
+}
+
+.main-content .column {
+  min-width: 0;
+}
+
+.main-content h3 {
+  margin: 0 0 6px 0;
+  font-size: 14px;
+  font-weight: bold;
+  color: #0000ff;
+}
+
+.main-content h3 a {
+  color: #0000ff;
+  text-decoration: none;
+}
+
+.main-content h3 a:hover {
+  text-decoration: underline;
+}
+
+.main-content ul {
+  margin: 0 0 16px 0;
+  padding-left: 18px;
+  list-style-type: disc;
+  font-size: 13px;
+}
+
+.main-content li {
+  margin: 2px 0;
+}
+
+/* Right column has sub-sections (nearby cl, us cities, etc.) */
+.main-content .column:last-child h4 {
+  margin: 12px 0 4px 0;
+  font-size: 12px;
+  font-weight: bold;
+  color: #000;
+}
+
+.main-content .column:last-child h4:first-child {
+  margin-top: 0;
+}
+
+.main-content .column:last-child ul {
+  margin-bottom: 8px;
+}
+
+/* Footer strip */
+.footer-bottom {
+  padding: 10px 16px;
+  border-top: 1px solid #ddd;
+  font-size: 11px;
+  color: #666;
+  background: #fafafa;
+}
+
+.footer-bottom a {
+  color: #0000ff;
+}
