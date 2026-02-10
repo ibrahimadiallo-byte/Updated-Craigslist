@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "node src/index.js",
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "seed": "node src/seed.js",
+    "check": "node src/check.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
