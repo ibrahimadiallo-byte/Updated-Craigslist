@@ -1,9 +1,10 @@
 import '../styles/main.css';
 import { Router } from './router';
-import { initializeApp } from './app';
+import { initializeApp, setRouter } from './app';
 
 // Initialize the application
 document.addEventListener('DOMContentLoaded', () => {
   initializeApp();
-  new Router();
+  const router = new Router();
+  setRouter(router);
 });
