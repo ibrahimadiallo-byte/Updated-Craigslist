@@ -24,6 +24,20 @@ Frontend (Paula)
 - Integrate GET endpoints for listing and filtering
 - Add POST integration once UI is ready
 
+🧰 Backend Setup (Node + Express)
+1. Install dependencies:
+   cd "Updated Craigslist/backend"
+   npm install
+2. Seed sample data (optional):
+   npm run seed
+3. Start server:
+   npm run dev
+4. Verify in browser:
+   http://localhost:3000/api/health
+   http://localhost:3000/api/listings
+5. Contract check (optional):
+   npm run check
+
 🎯 Product Vision
 Create a minimal viable classifieds platform where:
 Users can post listings across different categories
