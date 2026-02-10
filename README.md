@@ -24,6 +24,17 @@ Frontend (Paula)
 - Integrate GET endpoints for listing and filtering
 - Add POST integration once UI is ready
 
+✅ Team Assignments (Updated-Craigslist)
+Ibrahima (Backend)
+- API contract ownership (API.md)
+- Database + persistence
+- REST endpoints + validation
+- Seed data + contract check script
+Paula (Frontend)
+- Page layouts + styling
+- Listing form + category pages
+- API integration for listing/browse
+
 🧰 Backend Setup (Node + Express)
 1. Install dependencies:
    cd "Updated Craigslist/backend"
