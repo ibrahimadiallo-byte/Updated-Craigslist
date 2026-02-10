@@ -9,6 +9,21 @@ Timeline: 1 Week
 Business Model: Advertising - Paid listings for job postings and housing rentals
 Objective: Build a simplified classifieds platform that demonstrates the core advertising business model where businesses pay to post certain types of listings (jobs, housing) while regular users browse for free.
 
+🤝 Team Responsibilities
+Backend (Ibrahima)
+- Maintain API contract in API.md
+- Database schema and persistence (SQLite)
+- Core endpoints:
+  POST /api/listings
+  GET /api/listings
+  GET /api/listings?category=...
+  GET /api/listings/:id
+- Validation and consistent error responses
+Frontend (Paula)
+- Build UI using API.md as the contract
+- Integrate GET endpoints for listing and filtering
+- Add POST integration once UI is ready
+
 🎯 Product Vision
 Create a minimal viable classifieds platform where:
 Users can post listings across different categories
@@ -455,4 +470,3 @@ Understand CPM, CPC, CPA models from earlier discussion
 Research other classifieds platforms (OfferUp, Facebook Marketplace) for comparison
 
 Good luck! You've got this. Focus on the core feature, keep it simple, and make sure the advertising business model is crystal clear in your demo. 🚀
-
