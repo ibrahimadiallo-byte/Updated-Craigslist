@@ -2,22 +2,27 @@
 
 const postForm = document.getElementById('postForm');
 const categorySelect = document.getElementById('category');
-const categoryNote = document.getElementById('categoryNote');
 const successMessage = document.getElementById('successMessage');
 const errorMessage = document.getElementById('errorMessage');
 const loadingIndicator = document.getElementById('loadingIndicator');
+const pricingSelected = document.getElementById('pricingSelected');
 
-// Show category note about paid listings
+// Update pricing display based on selected category
 categorySelect.addEventListener('change', () => {
   const category = categorySelect.value;
+  
   if (category === 'Jobs' || category === 'Housing') {
-    categoryNote.textContent = '⚠️ This category requires a paid listing';
-    categoryNote.style.color = '#f00';
+    pricingSelected.innerHTML = '💳 PAID LISTING - $45 will be charged';
+    pricingSelected.style.background = '#ff9800';
+    pricingSelected.style.color = '#000';
+    pricingSelected.classList.add('active');
   } else if (category === 'For Sale' || category === 'Services') {
-    categoryNote.textContent = 'This is a free listing';
-    categoryNote.style.color = '#080';
+    pricingSelected.innerHTML = '✓ FREE LISTING';
+    pricingSelected.style.background = '#4caf50';
+    pricingSelected.style.color = '#fff';
+    pricingSelected.classList.add('active');
   } else {
-    categoryNote.textContent = '';
+    pricingSelected.classList.remove('active');
   }
 });
 
@@ -127,7 +132,7 @@ postForm.addEventListener('submit', async (e) => {
 
 // Handle reset
 postForm.addEventListener('reset', () => {
-  categoryNote.textContent = '';
+  pricingSelected.classList.remove('active');
   successMessage.style.display = 'none';
   errorMessage.style.display = 'none';
   document.querySelectorAll('.error').forEach(el => el.textContent = '');

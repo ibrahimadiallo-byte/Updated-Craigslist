@@ -36,7 +36,7 @@
     .form-group label {
       display: block;
       margin-bottom: 6px;
-      font-weight: bold;
+      font-weight: 900;
       color: #000;
       font-size: 13px;
     }
@@ -147,6 +147,99 @@
       color: #666;
       font-size: 12px;
     }
+
+    .pricing-container {
+      background: linear-gradient(135deg, #f0f0f0 0%, #e8e8e8 100%);
+      border: 2px solid #333;
+      padding: 20px;
+      border-radius: 4px;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    .pricing-header {
+      font-size: 16px;
+      font-weight: 900;
+      color: #000;
+      margin-bottom: 12px;
+    }
+
+    .pricing-display {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .pricing-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 12px 20px;
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      min-width: 150px;
+    }
+
+    .pricing-item.free {
+      background: #e8f5e9;
+      border-color: #4caf50;
+    }
+
+    .pricing-item.paid {
+      background: #fff3cd;
+      border-color: #ff9800;
+    }
+
+    .pricing-category {
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 4px;
+      font-weight: bold;
+    }
+
+    .pricing-price {
+      font-size: 24px;
+      font-weight: 900;
+      color: #000;
+    }
+
+    .pricing-note {
+      font-size: 11px;
+      color: #666;
+      margin-top: 4px;
+    }
+
+    .pricing-selected {
+      background: #0000ff;
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: 4px;
+      font-weight: bold;
+      margin-top: 12px;
+      min-height: 24px;
+      display: none;
+    }
+
+    .pricing-selected.active {
+      display: block;
+    }
+
+    .form-section-title {
+      font-size: 16px;
+      font-weight: 900;
+      color: #000;
+      margin-top: 24px;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #ddd;
+    }
+
+    .form-section-title:first-of-type {
+      margin-top: 0;
+    }
   </style>
 </head>
 <body>
@@ -208,6 +301,27 @@
       <div id="errorMessage" class="error-message"></div>
 
       <form id="postForm" class="post-form" novalidate>
+        <div class="pricing-container">
+          <div class="pricing-header">📌 Pricing</div>
+          <div class="pricing-display">
+            <div class="pricing-item free">
+              <div class="pricing-category">For Sale / Services</div>
+              <div class="pricing-price">FREE</div>
+              <div class="pricing-note">No charge</div>
+            </div>
+            <div class="pricing-item paid">
+              <div class="pricing-category">Jobs / Housing</div>
+              <div class="pricing-price">$45</div>
+              <div class="pricing-note">Per listing</div>
+            </div>
+          </div>
+          <div id="pricingNote" class="pricing-note" style="color: #000; font-weight: bold; margin-top: 8px;">
+            Select a category below to see your listing price
+          </div>
+          <div id="pricingSelected" class="pricing-selected"></div>
+        </div>
+
+        <div class="form-section-title">Listing Details</div>
         <div class="form-group required">
           <label for="title">Title</label>
           <input type="text" id="title" name="title" placeholder="Enter listing title" required>
@@ -224,14 +338,15 @@
           <label for="category">Category</label>
           <select id="category" name="category" required>
             <option value="">-- Select a Category --</option>
-            <option value="Jobs">Jobs</option>
-            <option value="Housing">Housing</option>
-            <option value="For Sale">For Sale</option>
-            <option value="Services">Services</option>
+            <option value="Jobs">Jobs ($45)</option>
+            <option value="Housing">Housing ($45)</option>
+            <option value="For Sale">For Sale (FREE)</option>
+            <option value="Services">Services (FREE)</option>
           </select>
           <span class="error" id="categoryError"></span>
-          <small id="categoryNote"></small>
         </div>
+
+        <div class="form-section-title">Additional Information</div>
 
         <div class="form-group">
           <label for="price">Price</label>
