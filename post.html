@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>craigslist: post to classifieds</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .post-container {
+      flex: 1;
+      padding: 16px;
+      max-width: 800px;
+    }
+
+    .post-header {
+      margin-bottom: 24px;
+    }
+
+    .post-header h2 {
+      margin: 0 0 10px 0;
+      font-size: 20px;
+      color: #000;
+    }
+
+    .post-form {
+      background: #f9f9f9;
+      border: 1px solid #ddd;
+      padding: 16px;
+      border-radius: 2px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+      color: #000;
+      font-size: 13px;
+    }
+
+    .form-group.required label::after {
+      content: " *";
+      color: #f00;
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="email"],
+    .form-group input[type="number"],
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 8px 10px;
+      font-size: 13px;
+      border: 1px solid #ccc;
+      border-radius: 2px;
+      font-family: inherit;
+      color: #000;
+      background: #fff;
+      box-sizing: border-box;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 120px;
+      font-family: Verdana, Arial, sans-serif;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #0000ff;
+      box-shadow: 0 0 3px rgba(0, 0, 255, 0.3);
+    }
+
+    .form-group small {
+      display: block;
+      margin-top: 4px;
+      color: #666;
+      font-size: 12px;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .btn {
+      padding: 10px 24px;
+      font-size: 13px;
+      border: none;
+      border-radius: 2px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.2s;
+    }
+
+    .btn-submit {
+      background: #0a0;
+      color: #fff;
+    }
+
+    .btn-submit:hover {
+      background: #080;
+    }
+
+    .btn-cancel {
+      background: #ddd;
+      color: #000;
+    }
+
+    .btn-cancel:hover {
+      background: #ccc;
+    }
+
+    .error {
+      color: #f00;
+      font-size: 12px;
+      margin-top: 4px;
+    }
+
+    .success-message {
+      background: #0f0;
+      color: #000;
+      padding: 12px 16px;
+      border-radius: 2px;
+      margin-bottom: 16px;
+      display: none;
+    }
+
+    .error-message {
+      background: #fee;
+      color: #f00;
+      padding: 12px 16px;
+      border: 1px solid #f00;
+      border-radius: 2px;
+      margin-bottom: 16px;
+      display: none;
+    }
+
+    .loading-indicator {
+      display: none;
+      color: #666;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Top header: logo | location + boroughs | faves post acct language -->
+  <div class="topbar">
+    <a href="index.html" class="topbar-logo">
+      <span class="logo-icon">☮</span>
+      craigslist
+    </a>
+    <div class="topbar-center">
+      <span class="location-icon">📍</span>
+      <span class="location-name">new york</span>
+      <span class="boroughs">
+        <a href="#">mnh</a>
+        <a href="#">brk</a>
+        <a href="#">que</a>
+        <a href="#">brx</a>
+        <a href="#">stn</a>
+        <a href="#">jsy</a>
+        <a href="#">lgi</a>
+        <a href="#">wch</a>
+        <a href="#">fct</a>
+      </span>
+    </div>
+    <div class="topbar-right">
+      <a href="#" class="nav-item faves">★ faves</a>
+      <a href="post.html" class="nav-item post">✎ post</a>
+      <a href="#" class="nav-item acct">👤 acct</a>
+      <select aria-label="language">
+        <option>english</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="page-layout">
+    <!-- Left sidebar -->
+    <aside class="sidebar">
+      <a href="post.html" class="btn-post-ad">✎ post an ad</a>
+      <div class="search-wrap">
+        <input type="search" placeholder="search craigslist" aria-label="search craigslist">
+      </div>
+      <ul class="sidebar-links">
+        <li><a href="index.html">back to homepage</a></li>
+        <li><a href="#">help, faq, abuse, legal</a></li>
+        <li><a href="#">avoid scams &amp; fraud</a></li>
+        <li><a href="#">personal safety tips</a></li>
+        <li><a href="#">about craigslist</a></li>
+      </ul>
+    </aside>
+
+    <!-- Main content -->
+    <div class="post-container">
+      <div class="post-header">
+        <h2>Post a New Listing</h2>
+        <p>Fill out the form below to post your listing.</p>
+      </div>
+
+      <div id="successMessage" class="success-message"></div>
+      <div id="errorMessage" class="error-message"></div>
+
+      <form id="postForm" class="post-form" novalidate>
+        <div class="form-group required">
+          <label for="title">Title</label>
+          <input type="text" id="title" name="title" placeholder="Enter listing title" required>
+          <span class="error" id="titleError"></span>
+        </div>
+
+        <div class="form-group required">
+          <label for="description">Description</label>
+          <textarea id="description" name="description" placeholder="Describe your listing in detail..." required></textarea>
+          <span class="error" id="descriptionError"></span>
+        </div>
+
+        <div class="form-group required">
+          <label for="category">Category</label>
+          <select id="category" name="category" required>
+            <option value="">-- Select a Category --</option>
+            <option value="Jobs">Jobs</option>
+            <option value="Housing">Housing</option>
+            <option value="For Sale">For Sale</option>
+            <option value="Services">Services</option>
+          </select>
+          <span class="error" id="categoryError"></span>
+          <small id="categoryNote"></small>
+        </div>
+
+        <div class="form-group">
+          <label for="price">Price</label>
+          <input type="number" id="price" name="price" placeholder="Enter price (optional)" min="0" step="0.01">
+          <small>Optional - leave blank if not applicable</small>
+          <span class="error" id="priceError"></span>
+        </div>
+
+        <div class="form-group required">
+          <label for="contactEmail">Contact Email</label>
+          <input type="email" id="contactEmail" name="contactEmail" placeholder="your@email.com" required>
+          <span class="error" id="contactEmailError"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="imageUrl">Image URL</label>
+          <input type="text" id="imageUrl" name="imageUrl" placeholder="https://example.com/image.jpg (optional)">
+          <small>Optional - URL to an image for your listing</small>
+          <span class="error" id="imageUrlError"></span>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-submit">Post Listing</button>
+          <button type="reset" class="btn btn-cancel">Clear</button>
+          <span class="loading-indicator" id="loadingIndicator">Posting...</span>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    help safety privacy terms · about · © 2026 craigslist
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/post.js"></script>
+</body>
+</html>
