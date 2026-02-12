@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>craigslist: select location</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .post-container { flex: 1; padding: 16px; max-width: 800px; }
+    .step-header { margin-bottom: 16px; }
+    .step-badge { display: inline-block; background: #000; color: #fff; padding: 4px 10px; font-size: 12px; border-radius: 12px; }
+    .step-title { margin: 10px 0 6px; font-size: 20px; }
+    .form-card { background: #f9f9f9; border: 1px solid #ddd; padding: 16px; border-radius: 2px; }
+    .option-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .option-item { display: flex; align-items: center; gap: 8px; padding: 10px; border: 1px solid #ddd; border-radius: 4px; background: #fff; }
+    .form-actions { margin-top: 16px; display: flex; gap: 10px; }
+    .btn { padding: 10px 24px; font-size: 13px; border: none; border-radius: 2px; cursor: pointer; font-weight: bold; }
+    .btn-submit { background: #0a0; color: #fff; }
+    .btn-submit:hover { background: #080; }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <a href="index.html" class="topbar-logo"><span class="logo-icon">☮</span> craigslist</a>
+    <div class="topbar-center">
+      <span class="location-icon">📍</span>
+      <span class="location-name">new york</span>
+    </div>
+    <div class="topbar-right">
+      <a href="post-location.html" class="nav-item post">✎ post</a>
+      <select aria-label="language"><option>english</option></select>
+    </div>
+  </div>
+
+  <div class="page-layout">
+    <aside class="sidebar">
+      <a href="post-location.html" class="btn-post-ad">✎ post an ad</a>
+      <div class="search-wrap">
+        <input type="search" placeholder="search craigslist" aria-label="search craigslist">
+      </div>
+      <ul class="sidebar-links">
+        <li><a href="index.html">back to homepage</a></li>
+      </ul>
+    </aside>
+
+    <div class="post-container">
+      <div class="step-header">
+        <span class="step-badge">Step 1 of 4</span>
+        <h2 class="step-title">Select Your Location</h2>
+        <p>Choose the borough or area where your listing belongs.</p>
+      </div>
+
+      <form id="locationForm" class="form-card">
+        <div class="option-list">
+          <label class="option-item"><input type="radio" name="location" value="manhattan" required> Manhattan</label>
+          <label class="option-item"><input type="radio" name="location" value="brooklyn"> Brooklyn</label>
+          <label class="option-item"><input type="radio" name="location" value="queens"> Queens</label>
+          <label class="option-item"><input type="radio" name="location" value="bronx"> Bronx</label>
+          <label class="option-item"><input type="radio" name="location" value="staten-island"> Staten Island</label>
+          <label class="option-item"><input type="radio" name="location" value="jersey-city"> Jersey City</label>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-submit">Continue</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="footer-bottom">help safety privacy terms · about · © 2026 craigslist</div>
+
+  <script>
+    document.getElementById('locationForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const selected = document.querySelector('input[name="location"]:checked');
+      if (!selected) return;
+      window.location.href = `post-type.html?location=${encodeURIComponent(selected.value)}`;
+    });
+  </script>
+</body>
+</html>

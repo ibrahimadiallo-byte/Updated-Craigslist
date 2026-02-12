@@ -6,6 +6,43 @@ const successMessage = document.getElementById('successMessage');
 const errorMessage = document.getElementById('errorMessage');
 const loadingIndicator = document.getElementById('loadingIndicator');
 const pricingSelected = document.getElementById('pricingSelected');
+const pricingNote = document.getElementById('pricingNote');
+const flowLocation = document.getElementById('flowLocation');
+const flowType = document.getElementById('flowType');
+const flowSubcategories = document.getElementById('flowSubcategories');
+
+function mapTypeToCategory(type) {
+  if (!type) return '';
+  if (type.includes('job') || type.includes('gig') || type.includes('resume')) return 'Jobs';
+  if (type.includes('housing')) return 'Housing';
+  if (type.includes('for-sale') || type.includes('wanted')) return 'For Sale';
+  if (type.includes('service') || type.includes('community') || type.includes('event')) return 'Services';
+  return '';
+}
+
+function parseSubcategories(param) {
+  if (!param) return [];
+  return param.split(',').map((s) => s.trim()).filter(Boolean);
+}
+
+const urlParams = new URLSearchParams(window.location.search);
+const locationParam = urlParams.get('location') || '';
+const typeParam = urlParams.get('type') || '';
+const categoriesParam = urlParams.get('categories') || '';
+const selectedCategory = mapTypeToCategory(typeParam);
+
+if (!locationParam || !typeParam || !categoriesParam) {
+  window.location.href = 'post-location.html';
+}
+
+if (flowLocation) flowLocation.value = locationParam || '';
+if (flowType) flowType.value = typeParam || '';
+if (flowSubcategories) flowSubcategories.value = categoriesParam || '';
+
+if (selectedCategory) {
+  categorySelect.value = selectedCategory;
+  categorySelect.dispatchEvent(new Event('change'));
+}
 
 // Update pricing display based on selected category
 categorySelect.addEventListener('change', () => {
@@ -98,9 +135,16 @@ postForm.addEventListener('submit', async (e) => {
     title: document.getElementById('title').value.trim(),
     description: document.getElementById('description').value.trim(),
     category: categorySelect.value,
+    subcategories: parseSubcategories(flowSubcategories ? flowSubcategories.value : ''),
+    location: flowLocation ? flowLocation.value.trim() || null : null,
+    city: document.getElementById('city').value.trim() || null,
+    zip: document.getElementById('zip').value.trim() || null,
     contact_email: document.getElementById('contactEmail').value.trim(),
     price: document.getElementById('price').value ? parseFloat(document.getElementById('price').value) : null,
-    image_url: document.getElementById('imageUrl').value.trim() || null
+    image_url: document.getElementById('imageUrl').value.trim() || null,
+    employment_type: document.getElementById('employmentType').value || null,
+    experience_level: document.getElementById('experienceLevel').value || null,
+    company_name: document.getElementById('companyName').value.trim() || null
   };
   
   // Submit
@@ -117,7 +161,7 @@ postForm.addEventListener('submit', async (e) => {
     
     // Reset form
     postForm.reset();
-    categoryNote.textContent = '';
+    if (pricingNote) pricingNote.textContent = '';
     
     // Scroll to success message
     successMessage.scrollIntoView({ behavior: 'smooth', block: 'start' });

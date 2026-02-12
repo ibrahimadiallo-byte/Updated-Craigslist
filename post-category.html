@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>craigslist: select categories</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .post-container { flex: 1; padding: 16px; max-width: 1000px; }
+    .step-header { margin-bottom: 16px; }
+    .step-badge { display: inline-block; background: #000; color: #fff; padding: 4px 10px; font-size: 12px; border-radius: 12px; }
+    .step-title { margin: 10px 0 6px; font-size: 20px; }
+    .pricing-header { background: #f8f9fa; padding: 16px; border-left: 4px solid #28a745; margin-bottom: 16px; }
+    .price-badge { display: inline-block; background: #28a745; color: #fff; padding: 6px 12px; border-radius: 4px; font-weight: bold; font-size: 16px; }
+    .cost-summary { background: #fff3cd; border: 2px solid #ffc107; padding: 12px; margin-bottom: 16px; border-radius: 4px; }
+    .total-cost { font-size: 20px; font-weight: bold; color: #28a745; }
+    .category-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+    .category-option { display: flex; align-items: center; gap: 8px; padding: 10px; border: 1px solid #ddd; border-radius: 4px; background: #fff; }
+    .category-option:hover { background: #f8f9fa; }
+    .price-tag { margin-left: auto; background: #e9ecef; padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+    .form-actions { margin-top: 16px; display: flex; gap: 10px; }
+    .btn { padding: 10px 24px; font-size: 13px; border: none; border-radius: 2px; cursor: pointer; font-weight: bold; }
+    .btn-submit { background: #0a0; color: #fff; }
+    .btn-submit:hover { background: #080; }
+    .sticky-footer { position: sticky; bottom: 0; background: #fff; border-top: 2px solid #eee; padding: 12px; margin-top: 16px; display: flex; justify-content: space-between; align-items: center; }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <a href="index.html" class="topbar-logo"><span class="logo-icon">☮</span> craigslist</a>
+    <div class="topbar-center">
+      <span class="location-icon">📍</span>
+      <span class="location-name">new york</span>
+    </div>
+    <div class="topbar-right">
+      <a href="post-location.html" class="nav-item post">✎ post</a>
+      <select aria-label="language"><option>english</option></select>
+    </div>
+  </div>
+
+  <div class="page-layout">
+    <aside class="sidebar">
+      <a href="post-location.html" class="btn-post-ad">✎ post an ad</a>
+      <div class="search-wrap">
+        <input type="search" placeholder="search craigslist" aria-label="search craigslist">
+      </div>
+      <ul class="sidebar-links">
+        <li><a href="index.html">back to homepage</a></li>
+      </ul>
+    </aside>
+
+    <div class="post-container">
+      <div class="step-header">
+        <span class="step-badge">Step 3 of 4</span>
+        <h2 class="step-title">Select Categories</h2>
+        <p id="locationDisplay"></p>
+      </div>
+
+      <div class="pricing-header">
+        <div><strong>select categories</strong> <span id="priceLabel" class="price-badge">$45 each</span></div>
+      </div>
+
+      <div class="cost-summary">
+        <div>Categories selected: <strong id="category-count">0</strong></div>
+        <div class="total-cost">Total: $<span id="total-cost">0</span></div>
+      </div>
+
+      <form id="categoryForm">
+        <div class="category-grid" id="categoryGrid"></div>
+
+        <div class="sticky-footer">
+          <div>Total: $<span id="footer-total">0</span></div>
+          <button type="submit" class="btn btn-submit">Continue</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="footer-bottom">help safety privacy terms · about · © 2026 craigslist</div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const locationParam = params.get('location') || '';
+    const typeParam = params.get('type') || '';
+
+    const locationDisplay = document.getElementById('locationDisplay');
+    locationDisplay.textContent = locationParam ? `Location: ${locationParam}` : 'Location: not selected';
+
+    const pricePerCategory = (typeParam.includes('job') || typeParam.includes('housing')) ? 45 : 0;
+    document.getElementById('priceLabel').textContent = pricePerCategory ? `$${pricePerCategory} each` : 'FREE';
+
+    const categories = [
+      'accounting/finance', 'admin/office', 'architect/engineer/cad', 'art/media/design', 'business/mgmt',
+      'customer service', 'education/teaching', 'food/bev/hosp', 'general labor', 'government', 'healthcare',
+      'human resources', 'legal/paralegal', 'marketing/advertising', 'nonprofit', 'real estate', 'retail/wholesale',
+      'sales', 'salon/spa/fitness', 'science/biotech', 'security', 'skilled trade/craft', 'software/qa/dba',
+      'systems/network', 'technical support', 'transport', 'tv/film/video', 'web/info design', 'writing/editing'
+    ];
+
+    const grid = document.getElementById('categoryGrid');
+    grid.innerHTML = categories.map((cat) => `
+      <label class="category-option">
+        <input type="checkbox" name="category" value="${cat}">
+        <span>${cat}</span>
+        <span class="price-tag">$${pricePerCategory}</span>
+      </label>
+    `).join('');
+
+    const checkboxes = () => Array.from(document.querySelectorAll('input[name="category"]:checked'));
+    const categoryCount = document.getElementById('category-count');
+    const totalCost = document.getElementById('total-cost');
+    const footerTotal = document.getElementById('footer-total');
+
+    function updateCost() {
+      const count = checkboxes().length;
+      const total = count * pricePerCategory;
+      categoryCount.textContent = count;
+      totalCost.textContent = total;
+      footerTotal.textContent = total;
+    }
+
+    document.querySelectorAll('input[name="category"]').forEach(cb => {
+      cb.addEventListener('change', updateCost);
+    });
+
+    document.getElementById('categoryForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const selected = checkboxes().map(cb => cb.value);
+      if (selected.length === 0) {
+        alert('Please select at least one category');
+        return;
+      }
+      const categoriesStr = selected.join(',');
+      const locationPart = locationParam ? `location=${encodeURIComponent(locationParam)}&` : '';
+      const typePart = typeParam ? `type=${encodeURIComponent(typeParam)}&` : '';
+      window.location.href = `post.html?${locationPart}${typePart}categories=${encodeURIComponent(categoriesStr)}`;
+    });
+  </script>
+</body>
+</html>

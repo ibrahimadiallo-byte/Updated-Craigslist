@@ -266,7 +266,7 @@
     </div>
     <div class="topbar-right">
       <a href="#" class="nav-item faves">★ faves</a>
-      <a href="post.html" class="nav-item post">✎ post</a>
+      <a href="post-location.html" class="nav-item post">✎ post</a>
       <a href="#" class="nav-item acct">👤 acct</a>
       <select aria-label="language">
         <option>english</option>
@@ -277,7 +277,7 @@
   <div class="page-layout">
     <!-- Left sidebar -->
     <aside class="sidebar">
-      <a href="post.html" class="btn-post-ad">✎ post an ad</a>
+      <a href="post-location.html" class="btn-post-ad">✎ post an ad</a>
       <div class="search-wrap">
         <input type="search" placeholder="search craigslist" aria-label="search craigslist">
       </div>
@@ -294,7 +294,7 @@
     <div class="post-container">
       <div class="post-header">
         <h2>Post a New Listing</h2>
-        <p>Fill out the form below to post your listing.</p>
+        <p>Step 4 of 4: Fill out the form below to post your listing.</p>
       </div>
 
       <div id="successMessage" class="success-message"></div>
@@ -322,6 +322,21 @@
         </div>
 
         <div class="form-section-title">Listing Details</div>
+        <div class="form-group">
+          <label for="flowLocation">Location (from previous step)</label>
+          <input type="text" id="flowLocation" name="flowLocation" readonly>
+        </div>
+
+        <div class="form-group">
+          <label for="flowType">Posting Type (from previous step)</label>
+          <input type="text" id="flowType" name="flowType" readonly>
+        </div>
+
+        <div class="form-group">
+          <label for="flowSubcategories">Selected Categories</label>
+          <input type="text" id="flowSubcategories" name="flowSubcategories" readonly>
+        </div>
+
         <div class="form-group required">
           <label for="title">Title</label>
           <input type="text" id="title" name="title" placeholder="Enter listing title" required>
@@ -347,6 +362,43 @@
         </div>
 
         <div class="form-section-title">Additional Information</div>
+        <div class="form-group">
+          <label for="city">City / Neighborhood</label>
+          <input type="text" id="city" name="city" placeholder="e.g., Bronx, Brooklyn, Manhattan">
+        </div>
+
+        <div class="form-group">
+          <label for="zip">ZIP Code</label>
+          <input type="text" id="zip" name="zip" placeholder="e.g., 10451">
+        </div>
+
+        <div class="form-group">
+          <label for="employmentType">Employment Type</label>
+          <select id="employmentType" name="employmentType">
+            <option value="">-- Select --</option>
+            <option value="full-time">Full-time</option>
+            <option value="part-time">Part-time</option>
+            <option value="contract">Contract</option>
+            <option value="temporary">Temporary</option>
+            <option value="internship">Internship</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="experienceLevel">Experience Level</label>
+          <select id="experienceLevel" name="experienceLevel">
+            <option value="">-- Select --</option>
+            <option value="entry-level">Entry-level</option>
+            <option value="mid-level">Mid-level</option>
+            <option value="senior-level">Senior-level</option>
+            <option value="manager">Manager</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="companyName">Company Name</label>
+          <input type="text" id="companyName" name="companyName" placeholder="Company (optional)">
+        </div>
 
         <div class="form-group">
           <label for="price">Price</label>
