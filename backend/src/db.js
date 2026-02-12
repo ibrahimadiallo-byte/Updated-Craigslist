@@ -16,16 +16,39 @@ export function initDb() {
       title TEXT NOT NULL,
       description TEXT NOT NULL,
       category TEXT NOT NULL,
+      subcategories TEXT,
+      location TEXT,
+      city TEXT,
+      zip TEXT,
       price REAL,
       contact_email TEXT NOT NULL,
       image_url TEXT,
       is_paid INTEGER NOT NULL DEFAULT 0,
+      employment_type TEXT,
+      experience_level TEXT,
+      company_name TEXT,
       created_at TEXT NOT NULL
     );
   `;
 
   db.serialize(() => {
     db.run(createSql);
+    db.all("PRAGMA table_info(listings)", (err, rows) => {
+      if (err) return;
+      const existing = new Set(rows.map((row) => row.name));
+      const addColumn = (name, type) => {
+        if (!existing.has(name)) {
+          db.run(`ALTER TABLE listings ADD COLUMN ${name} ${type}`);
+        }
+      };
+      addColumn("subcategories", "TEXT");
+      addColumn("location", "TEXT");
+      addColumn("city", "TEXT");
+      addColumn("zip", "TEXT");
+      addColumn("employment_type", "TEXT");
+      addColumn("experience_level", "TEXT");
+      addColumn("company_name", "TEXT");
+    });
   });
 }
 

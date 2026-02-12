@@ -48,7 +48,6 @@ Paula (Frontend)
    http://localhost:3000/api/listings
 5. Contract check (optional):
    npm run check
-
 🎯 Product Vision
 Create a minimal viable classifieds platform where:
 Users can post listings across different categories

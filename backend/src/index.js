@@ -19,7 +19,21 @@ app.get("/api/health", (req, res) => {
 });
 
 app.post("/api/listings", async (req, res) => {
-  const { title, description, category, price, contact_email, image_url } = req.body || {};
+  const {
+    title,
+    description,
+    category,
+    subcategories,
+    location,
+    city,
+    zip,
+    price,
+    contact_email,
+    image_url,
+    employment_type,
+    experience_level,
+    company_name,
+  } = req.body || {};
 
   if (!title || !description || !category || !contact_email) {
     return res.status(400).json({
@@ -49,6 +63,24 @@ app.post("/api/listings", async (req, res) => {
     });
   }
 
+  const optionalStrings = [
+    ["location", location],
+    ["city", city],
+    ["zip", zip],
+    ["image_url", image_url],
+    ["employment_type", employment_type],
+    ["experience_level", experience_level],
+    ["company_name", company_name],
+  ];
+  for (const [key, value] of optionalStrings) {
+    if (value !== undefined && value !== null && typeof value !== "string") {
+      return res.status(400).json({
+        error: "ValidationError",
+        message: `${key} must be a string if provided`,
+      });
+    }
+  }
+
   if (price !== undefined && price !== null && typeof price !== "number") {
     return res.status(400).json({
       error: "ValidationError",
@@ -56,20 +88,75 @@ app.post("/api/listings", async (req, res) => {
     });
   }
 
+  if (subcategories !== undefined && subcategories !== null) {
+    const isArray = Array.isArray(subcategories);
+    const isString = typeof subcategories === "string";
+    if (!isArray && !isString) {
+      return res.status(400).json({
+        error: "ValidationError",
+        message: "subcategories must be an array of strings or a comma-separated string",
+      });
+    }
+  }
+
   const is_paid = PAID_CATEGORIES.has(category) ? 1 : 0;
   const created_at = new Date().toISOString();
+  const subcategoriesValue = Array.isArray(subcategories)
+    ? JSON.stringify(subcategories)
+    : subcategories ?? null;
 
   try {
     const result = await run(
       `
-      INSERT INTO listings (title, description, category, price, contact_email, image_url, is_paid, created_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO listings (
+        title,
+        description,
+        category,
+        subcategories,
+        location,
+        city,
+        zip,
+        price,
+        contact_email,
+        image_url,
+        is_paid,
+        employment_type,
+        experience_level,
+        company_name,
+        created_at
+      )
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `,
-      [title, description, category, price ?? null, contact_email, image_url ?? null, is_paid, created_at]
+      [
+        title,
+        description,
+        category,
+        subcategoriesValue,
+        location ?? null,
+        city ?? null,
+        zip ?? null,
+        price ?? null,
+        contact_email,
+        image_url ?? null,
+        is_paid,
+        employment_type ?? null,
+        experience_level ?? null,
+        company_name ?? null,
+        created_at,
+      ]
     );
 
     const listing = await get("SELECT * FROM listings WHERE id = ?", [result.lastID]);
     listing.is_paid = Boolean(listing.is_paid);
+    if (listing.subcategories) {
+      try {
+        listing.subcategories = JSON.parse(listing.subcategories);
+      } catch {
+        listing.subcategories = listing.subcategories.split(",").map((s) => s.trim()).filter(Boolean);
+      }
+    } else {
+      listing.subcategories = [];
+    }
 
     return res.status(201).json(listing);
   } catch (err) {
@@ -95,7 +182,19 @@ app.get("/api/listings", async (req, res) => {
         )
       : await all("SELECT * FROM listings ORDER BY datetime(created_at) DESC");
 
-    const listings = rows.map((row) => ({ ...row, is_paid: Boolean(row.is_paid) }));
+    const listings = rows.map((row) => {
+      const mapped = { ...row, is_paid: Boolean(row.is_paid) };
+      if (mapped.subcategories) {
+        try {
+          mapped.subcategories = JSON.parse(mapped.subcategories);
+        } catch {
+          mapped.subcategories = mapped.subcategories.split(",").map((s) => s.trim()).filter(Boolean);
+        }
+      } else {
+        mapped.subcategories = [];
+      }
+      return mapped;
+    });
     return res.json(listings);
   } catch (err) {
     return res.status(500).json({ error: "ServerError", message: "failed to fetch listings" });
@@ -118,6 +217,15 @@ app.get("/api/listings/:id", async (req, res) => {
     }
 
     listing.is_paid = Boolean(listing.is_paid);
+    if (listing.subcategories) {
+      try {
+        listing.subcategories = JSON.parse(listing.subcategories);
+      } catch {
+        listing.subcategories = listing.subcategories.split(",").map((s) => s.trim()).filter(Boolean);
+      }
+    } else {
+      listing.subcategories = [];
+    }
     return res.json(listing);
   } catch (err) {
     return res.status(500).json({ error: "ServerError", message: "failed to fetch listing" });

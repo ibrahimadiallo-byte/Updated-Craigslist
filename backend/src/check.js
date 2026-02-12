@@ -15,10 +15,17 @@ function validateListing(listing) {
     "title",
     "description",
     "category",
+    "subcategories",
+    "location",
+    "city",
+    "zip",
     "price",
     "contact_email",
     "image_url",
     "is_paid",
+    "employment_type",
+    "experience_level",
+    "company_name",
     "created_at",
   ];
 
@@ -35,11 +42,32 @@ function validateListing(listing) {
   if (listing.price !== null && typeof listing.price !== "number") {
     fail("price must be number or null");
   }
+  if (!Array.isArray(listing.subcategories)) {
+    fail("subcategories must be an array");
+  }
+  if (listing.location !== null && typeof listing.location !== "string") {
+    fail("location must be string or null");
+  }
+  if (listing.city !== null && typeof listing.city !== "string") {
+    fail("city must be string or null");
+  }
+  if (listing.zip !== null && typeof listing.zip !== "string") {
+    fail("zip must be string or null");
+  }
   if (typeof listing.contact_email !== "string") fail("contact_email must be a string");
   if (listing.image_url !== null && typeof listing.image_url !== "string") {
     fail("image_url must be string or null");
   }
   if (typeof listing.is_paid !== "boolean") fail("is_paid must be boolean");
+  if (listing.employment_type !== null && typeof listing.employment_type !== "string") {
+    fail("employment_type must be string or null");
+  }
+  if (listing.experience_level !== null && typeof listing.experience_level !== "string") {
+    fail("experience_level must be string or null");
+  }
+  if (listing.company_name !== null && typeof listing.company_name !== "string") {
+    fail("company_name must be string or null");
+  }
   if (!isIsoDate(listing.created_at)) fail("created_at must be ISO date string");
 }
 
