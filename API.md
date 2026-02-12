@@ -12,10 +12,17 @@ Fields returned by the API:
 - `title` (string)
 - `description` (string)
 - `category` (string: `Jobs`, `Housing`, `For Sale`, `Services`)
+- `subcategories` (string[])
+- `location` (string | null)
+- `city` (string | null)
+- `zip` (string | null)
 - `price` (number | null)
 - `contact_email` (string)
 - `image_url` (string | null)
 - `is_paid` (boolean)
+- `employment_type` (string | null)
+- `experience_level` (string | null)
+- `company_name` (string | null)
 - `created_at` (ISO 8601 string)
 
 ### Business Rules
@@ -23,6 +30,10 @@ Fields returned by the API:
 - If `category` is `For Sale` or `Services`, then `is_paid` must be `false`.
 - `price` is optional for all categories.
 - `image_url` is optional.
+- `title` and `description` must be strings.
+- `contact_email` must be a valid email address.
+- If provided, `price` must be a number.
+- `subcategories` may be an array of strings or a comma-separated string in POST; responses always return an array.
 
 ## Endpoints
 
@@ -35,9 +46,16 @@ Request body:
   "title": "Software Engineer - Remote",
   "description": "We're hiring a full-stack developer...",
   "category": "Jobs",
+  "subcategories": ["accounting/finance", "admin/office"],
+  "location": "bronx",
+  "city": "Bronx",
+  "zip": "10451",
   "price": 80000,
   "contact_email": "hr@company.com",
-  "image_url": null
+  "image_url": null,
+  "employment_type": "full-time",
+  "experience_level": "mid-level",
+  "company_name": "Acme Corp"
 }
 ```
 
@@ -48,10 +66,17 @@ Response: `201 Created`
   "title": "Software Engineer - Remote",
   "description": "We're hiring a full-stack developer...",
   "category": "Jobs",
+  "subcategories": ["accounting/finance", "admin/office"],
+  "location": "bronx",
+  "city": "Bronx",
+  "zip": "10451",
   "price": 80000,
   "contact_email": "hr@company.com",
   "image_url": null,
   "is_paid": true,
+  "employment_type": "full-time",
+  "experience_level": "mid-level",
+  "company_name": "Acme Corp",
   "created_at": "2026-02-10T18:30:00.000Z"
 }
 ```
@@ -75,10 +100,17 @@ Response: `200 OK`
     "title": "Software Engineer - Remote",
     "description": "We're hiring a full-stack developer...",
     "category": "Jobs",
+    "subcategories": ["accounting/finance", "admin/office"],
+    "location": "bronx",
+    "city": "Bronx",
+    "zip": "10451",
     "price": 80000,
     "contact_email": "hr@company.com",
     "image_url": null,
     "is_paid": true,
+    "employment_type": "full-time",
+    "experience_level": "mid-level",
+    "company_name": "Acme Corp",
     "created_at": "2026-02-10T18:30:00.000Z"
   }
 ]
@@ -95,10 +127,17 @@ Response: `200 OK`
     "title": "Software Engineer - Remote",
     "description": "We're hiring a full-stack developer...",
     "category": "Jobs",
+    "subcategories": ["accounting/finance", "admin/office"],
+    "location": "bronx",
+    "city": "Bronx",
+    "zip": "10451",
     "price": 80000,
     "contact_email": "hr@company.com",
     "image_url": null,
     "is_paid": true,
+    "employment_type": "full-time",
+    "experience_level": "mid-level",
+    "company_name": "Acme Corp",
     "created_at": "2026-02-10T18:30:00.000Z"
   }
 ]
@@ -122,10 +161,17 @@ Response: `200 OK`
   "title": "Software Engineer - Remote",
   "description": "We're hiring a full-stack developer...",
   "category": "Jobs",
+  "subcategories": ["accounting/finance", "admin/office"],
+  "location": "bronx",
+  "city": "Bronx",
+  "zip": "10451",
   "price": 80000,
   "contact_email": "hr@company.com",
   "image_url": null,
   "is_paid": true,
+  "employment_type": "full-time",
+  "experience_level": "mid-level",
+  "company_name": "Acme Corp",
   "created_at": "2026-02-10T18:30:00.000Z"
 }
 ```
