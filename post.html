@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>craigslist: post to classifieds</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .post-container {
+      flex: 1;
+      padding: 16px;
+      max-width: 800px;
+    }
+
+    .post-header {
+      margin-bottom: 24px;
+    }
+
+    .post-header h2 {
+      margin: 0 0 10px 0;
+      font-size: 20px;
+      color: #000;
+    }
+
+    .post-form {
+      background: #f9f9f9;
+      border: 1px solid #ddd;
+      padding: 16px;
+      border-radius: 2px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 900;
+      color: #000;
+      font-size: 13px;
+    }
+
+    .form-group.required label::after {
+      content: " *";
+      color: #f00;
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="email"],
+    .form-group input[type="number"],
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 8px 10px;
+      font-size: 13px;
+      border: 1px solid #ccc;
+      border-radius: 2px;
+      font-family: inherit;
+      color: #000;
+      background: #fff;
+      box-sizing: border-box;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 120px;
+      font-family: Verdana, Arial, sans-serif;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #0000ff;
+      box-shadow: 0 0 3px rgba(0, 0, 255, 0.3);
+    }
+
+    .form-group small {
+      display: block;
+      margin-top: 4px;
+      color: #666;
+      font-size: 12px;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .btn {
+      padding: 10px 24px;
+      font-size: 13px;
+      border: none;
+      border-radius: 2px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.2s;
+    }
+
+    .btn-submit {
+      background: #0a0;
+      color: #fff;
+    }
+
+    .btn-submit:hover {
+      background: #080;
+    }
+
+    .btn-cancel {
+      background: #ddd;
+      color: #000;
+    }
+
+    .btn-cancel:hover {
+      background: #ccc;
+    }
+
+    .error {
+      color: #f00;
+      font-size: 12px;
+      margin-top: 4px;
+    }
+
+    .success-message {
+      background: #0f0;
+      color: #000;
+      padding: 12px 16px;
+      border-radius: 2px;
+      margin-bottom: 16px;
+      display: none;
+    }
+
+    .error-message {
+      background: #fee;
+      color: #f00;
+      padding: 12px 16px;
+      border: 1px solid #f00;
+      border-radius: 2px;
+      margin-bottom: 16px;
+      display: none;
+    }
+
+    .loading-indicator {
+      display: none;
+      color: #666;
+      font-size: 12px;
+    }
+
+    .pricing-container {
+      background: linear-gradient(135deg, #f0f0f0 0%, #e8e8e8 100%);
+      border: 2px solid #333;
+      padding: 20px;
+      border-radius: 4px;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    .pricing-header {
+      font-size: 16px;
+      font-weight: 900;
+      color: #000;
+      margin-bottom: 12px;
+    }
+
+    .pricing-display {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .pricing-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 12px 20px;
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      min-width: 150px;
+    }
+
+    .pricing-item.free {
+      background: #e8f5e9;
+      border-color: #4caf50;
+    }
+
+    .pricing-item.paid {
+      background: #fff3cd;
+      border-color: #ff9800;
+    }
+
+    .pricing-category {
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 4px;
+      font-weight: bold;
+    }
+
+    .pricing-price {
+      font-size: 24px;
+      font-weight: 900;
+      color: #000;
+    }
+
+    .pricing-note {
+      font-size: 11px;
+      color: #666;
+      margin-top: 4px;
+    }
+
+    .pricing-selected {
+      background: #0000ff;
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: 4px;
+      font-weight: bold;
+      margin-top: 12px;
+      min-height: 24px;
+      display: none;
+    }
+
+    .pricing-selected.active {
+      display: block;
+    }
+
+    .form-section-title {
+      font-size: 16px;
+      font-weight: 900;
+      color: #000;
+      margin-top: 24px;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #ddd;
+    }
+
+    .form-section-title:first-of-type {
+      margin-top: 0;
+    }
+  </style>
+</head>
+<body>
+  <!-- Top header: logo | location + boroughs | faves post acct language -->
+  <div class="topbar">
+    <a href="index.html" class="topbar-logo">
+      <span class="logo-icon">☮</span>
+      craigslist
+    </a>
+    <div class="topbar-center">
+      <span class="location-icon">📍</span>
+      <span class="location-name">new york</span>
+      <span class="boroughs">
+        <a href="#">mnh</a>
+        <a href="#">brk</a>
+        <a href="#">que</a>
+        <a href="#">brx</a>
+        <a href="#">stn</a>
+        <a href="#">jsy</a>
+        <a href="#">lgi</a>
+        <a href="#">wch</a>
+        <a href="#">fct</a>
+      </span>
+    </div>
+    <div class="topbar-right">
+      <a href="#" class="nav-item faves">★ faves</a>
+      <a href="post-location.html" class="nav-item post">✎ post</a>
+      <a href="#" class="nav-item acct">👤 acct</a>
+      <select aria-label="language">
+        <option>english</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="page-layout">
+    <!-- Left sidebar -->
+    <aside class="sidebar">
+      <a href="post-location.html" class="btn-post-ad">✎ post an ad</a>
+      <div class="search-wrap">
+        <input type="search" placeholder="search craigslist" aria-label="search craigslist">
+      </div>
+      <ul class="sidebar-links">
+        <li><a href="index.html">back to homepage</a></li>
+        <li><a href="#">help, faq, abuse, legal</a></li>
+        <li><a href="#">avoid scams &amp; fraud</a></li>
+        <li><a href="#">personal safety tips</a></li>
+        <li><a href="#">about craigslist</a></li>
+      </ul>
+    </aside>
+
+    <!-- Main content -->
+    <div class="post-container">
+      <div class="post-header">
+        <h2>Post a New Listing</h2>
+        <p>Step 4 of 4: Fill out the form below to post your listing.</p>
+      </div>
+
+      <div id="successMessage" class="success-message"></div>
+      <div id="errorMessage" class="error-message"></div>
+
+      <form id="postForm" class="post-form" novalidate>
+        <div class="pricing-container">
+          <div class="pricing-header">📌 Pricing</div>
+          <div class="pricing-display">
+            <div class="pricing-item free">
+              <div class="pricing-category">For Sale / Services</div>
+              <div class="pricing-price">FREE</div>
+              <div class="pricing-note">No charge</div>
+            </div>
+            <div class="pricing-item paid">
+              <div class="pricing-category">Jobs / Housing</div>
+              <div class="pricing-price">$45</div>
+              <div class="pricing-note">Per listing</div>
+            </div>
+          </div>
+          <div id="pricingNote" class="pricing-note" style="color: #000; font-weight: bold; margin-top: 8px;">
+            Select a category below to see your listing price
+          </div>
+          <div id="pricingSelected" class="pricing-selected"></div>
+        </div>
+
+        <div class="form-section-title">Listing Details</div>
+        <div class="form-group">
+          <label for="flowLocation">Location (from previous step)</label>
+          <input type="text" id="flowLocation" name="flowLocation" readonly>
+        </div>
+
+        <div class="form-group">
+          <label for="flowType">Posting Type (from previous step)</label>
+          <input type="text" id="flowType" name="flowType" readonly>
+        </div>
+
+        <div class="form-group">
+          <label for="flowSubcategories">Selected Categories</label>
+          <input type="text" id="flowSubcategories" name="flowSubcategories" readonly>
+        </div>
+
+        <div class="form-group required">
+          <label for="title">Title</label>
+          <input type="text" id="title" name="title" placeholder="Enter listing title" required>
+          <span class="error" id="titleError"></span>
+        </div>
+
+        <div class="form-group required">
+          <label for="description">Description</label>
+          <textarea id="description" name="description" placeholder="Describe your listing in detail..." required></textarea>
+          <span class="error" id="descriptionError"></span>
+        </div>
+
+        <div class="form-group required">
+          <label for="category">Category</label>
+          <select id="category" name="category" required>
+            <option value="">-- Select a Category --</option>
+            <option value="Jobs">Jobs ($45)</option>
+            <option value="Housing">Housing ($45)</option>
+            <option value="For Sale">For Sale (FREE)</option>
+            <option value="Services">Services (FREE)</option>
+          </select>
+          <span class="error" id="categoryError"></span>
+        </div>
+
+        <div class="form-section-title">Additional Information</div>
+        <div class="form-group">
+          <label for="city">City / Neighborhood</label>
+          <input type="text" id="city" name="city" placeholder="e.g., Bronx, Brooklyn, Manhattan">
+        </div>
+
+        <div class="form-group">
+          <label for="zip">ZIP Code</label>
+          <input type="text" id="zip" name="zip" placeholder="e.g., 10451">
+        </div>
+
+        <div class="form-group">
+          <label for="employmentType">Employment Type</label>
+          <select id="employmentType" name="employmentType">
+            <option value="">-- Select --</option>
+            <option value="full-time">Full-time</option>
+            <option value="part-time">Part-time</option>
+            <option value="contract">Contract</option>
+            <option value="temporary">Temporary</option>
+            <option value="internship">Internship</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="experienceLevel">Experience Level</label>
+          <select id="experienceLevel" name="experienceLevel">
+            <option value="">-- Select --</option>
+            <option value="entry-level">Entry-level</option>
+            <option value="mid-level">Mid-level</option>
+            <option value="senior-level">Senior-level</option>
+            <option value="manager">Manager</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="companyName">Company Name</label>
+          <input type="text" id="companyName" name="companyName" placeholder="Company (optional)">
+        </div>
+
+        <div class="form-group">
+          <label for="price">Price</label>
+          <input type="number" id="price" name="price" placeholder="Enter price (optional)" min="0" step="0.01">
+          <small>Optional - leave blank if not applicable</small>
+          <span class="error" id="priceError"></span>
+        </div>
+
+        <div class="form-group required">
+          <label for="contactEmail">Contact Email</label>
+          <input type="email" id="contactEmail" name="contactEmail" placeholder="your@email.com" required>
+          <span class="error" id="contactEmailError"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="imageUrl">Image URL</label>
+          <input type="text" id="imageUrl" name="imageUrl" placeholder="https://example.com/image.jpg (optional)">
+          <small>Optional - URL to an image for your listing</small>
+          <span class="error" id="imageUrlError"></span>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-submit">Post Listing</button>
+          <button type="reset" class="btn btn-cancel">Clear</button>
+          <span class="loading-indicator" id="loadingIndicator">Posting...</span>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    help safety privacy terms · about · © 2026 craigslist
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/post.js"></script>
+</body>
+</html>

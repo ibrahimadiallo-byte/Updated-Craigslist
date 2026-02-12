@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>craigslist: select posting type</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .post-container { flex: 1; padding: 16px; max-width: 900px; }
+    .step-header { margin-bottom: 16px; }
+    .step-badge { display: inline-block; background: #000; color: #fff; padding: 4px 10px; font-size: 12px; border-radius: 12px; }
+    .step-title { margin: 10px 0 6px; font-size: 20px; }
+    .form-card { background: #f9f9f9; border: 1px solid #ddd; padding: 16px; border-radius: 2px; }
+    .option-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .option-item { display: flex; align-items: center; gap: 8px; padding: 10px; border: 1px solid #ddd; border-radius: 4px; background: #fff; }
+    .form-actions { margin-top: 16px; display: flex; gap: 10px; }
+    .btn { padding: 10px 24px; font-size: 13px; border: none; border-radius: 2px; cursor: pointer; font-weight: bold; }
+    .btn-submit { background: #0a0; color: #fff; }
+    .btn-submit:hover { background: #080; }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <a href="index.html" class="topbar-logo"><span class="logo-icon">☮</span> craigslist</a>
+    <div class="topbar-center">
+      <span class="location-icon">📍</span>
+      <span class="location-name">new york</span>
+    </div>
+    <div class="topbar-right">
+      <a href="post-location.html" class="nav-item post">✎ post</a>
+      <select aria-label="language"><option>english</option></select>
+    </div>
+  </div>
+
+  <div class="page-layout">
+    <aside class="sidebar">
+      <a href="post-location.html" class="btn-post-ad">✎ post an ad</a>
+      <div class="search-wrap">
+        <input type="search" placeholder="search craigslist" aria-label="search craigslist">
+      </div>
+      <ul class="sidebar-links">
+        <li><a href="index.html">back to homepage</a></li>
+      </ul>
+    </aside>
+
+    <div class="post-container">
+      <div class="step-header">
+        <span class="step-badge">Step 2 of 4</span>
+        <h2 class="step-title">Select Posting Type</h2>
+        <p>Choose the type that best matches your listing.</p>
+      </div>
+
+      <form id="typeForm" class="form-card">
+        <div class="option-list">
+          <label class="option-item"><input type="radio" name="type" value="job-offered" required> job offered</label>
+          <label class="option-item"><input type="radio" name="type" value="gig-offered"> gig offered</label>
+          <label class="option-item"><input type="radio" name="type" value="resume-job-wanted"> resume / job wanted</label>
+          <label class="option-item"><input type="radio" name="type" value="housing-offered"> housing offered</label>
+          <label class="option-item"><input type="radio" name="type" value="housing-wanted"> housing wanted</label>
+          <label class="option-item"><input type="radio" name="type" value="for-sale-owner"> for sale by owner</label>
+          <label class="option-item"><input type="radio" name="type" value="for-sale-dealer"> for sale by dealer</label>
+          <label class="option-item"><input type="radio" name="type" value="wanted-owner"> wanted by owner</label>
+          <label class="option-item"><input type="radio" name="type" value="wanted-dealer"> wanted by dealer</label>
+          <label class="option-item"><input type="radio" name="type" value="service-offered"> service offered</label>
+          <label class="option-item"><input type="radio" name="type" value="community"> community</label>
+          <label class="option-item"><input type="radio" name="type" value="event-class"> event / class</label>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-submit">Continue</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="footer-bottom">help safety privacy terms · about · © 2026 craigslist</div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const locationParam = params.get('location') || '';
+
+    document.getElementById('typeForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const selected = document.querySelector('input[name="type"]:checked');
+      if (!selected) return;
+      const locationPart = locationParam ? `location=${encodeURIComponent(locationParam)}&` : '';
+      window.location.href = `post-category.html?${locationPart}type=${encodeURIComponent(selected.value)}`;
+    });
+  </script>
+</body>
+</html>

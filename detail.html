@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>craigslist: listing</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .detail-container {
+      flex: 1;
+      padding: 16px;
+      max-width: 900px;
+    }
+
+    .breadcrumb {
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 16px;
+    }
+
+    .breadcrumb a {
+      color: #0000ff;
+    }
+
+    .detail-header {
+      margin-bottom: 20px;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 16px;
+    }
+
+    .detail-header h1 {
+      margin: 0 0 10px 0;
+      font-size: 24px;
+      color: #000;
+    }
+
+    .detail-meta {
+      display: flex;
+      gap: 20px;
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .detail-price {
+      font-size: 18px;
+      font-weight: bold;
+      color: #000;
+    }
+
+    .detail-body {
+      display: flex;
+      gap: 24px;
+    }
+
+    .detail-image-section {
+      flex-shrink: 0;
+    }
+
+    .detail-image {
+      width: 400px;
+      height: 300px;
+      background: #f0f0f0;
+      border: 1px solid #ddd;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #999;
+      font-size: 14px;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+
+    .detail-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .detail-content {
+      flex: 1;
+    }
+
+    .detail-section {
+      margin-bottom: 24px;
+    }
+
+    .detail-section h3 {
+      margin: 0 0 10px 0;
+      font-size: 14px;
+      font-weight: bold;
+      color: #000;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 6px;
+    }
+
+    .detail-description {
+      font-size: 13px;
+      line-height: 1.6;
+      color: #333;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+
+    .detail-info-row {
+      display: flex;
+      gap: 12px;
+      padding: 8px 0;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 13px;
+    }
+
+    .detail-info-row:last-child {
+      border-bottom: none;
+    }
+
+    .detail-info-label {
+      font-weight: bold;
+      color: #000;
+      min-width: 100px;
+    }
+
+    .detail-info-value {
+      color: #333;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 8px;
+      background: #ddd;
+      color: #000;
+      border-radius: 2px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .badge.paid {
+      background: #ff0;
+      color: #000;
+    }
+
+    .contact-section {
+      background: #f9f9f9;
+      border: 1px solid #ddd;
+      padding: 16px;
+      border-radius: 2px;
+      margin-top: 20px;
+    }
+
+    .contact-section h3 {
+      margin: 0 0 12px 0;
+      font-size: 14px;
+      font-weight: bold;
+      border: none;
+      padding: 0;
+    }
+
+    .contact-info {
+      font-size: 13px;
+      line-height: 1.6;
+      color: #333;
+    }
+
+    .contact-info a {
+      color: #0000ff;
+    }
+
+    .contact-info a:visited {
+      color: #551a8b;
+    }
+
+    .btn-back {
+      display: inline-block;
+      margin-bottom: 16px;
+      color: #0000ff;
+      text-decoration: underline;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .btn-back:hover {
+      text-decoration: underline;
+    }
+
+    .loading {
+      padding: 20px;
+      text-align: center;
+      color: #666;
+    }
+
+    .error {
+      padding: 16px;
+      background: #fee;
+      border: 1px solid #f00;
+      color: #f00;
+      border-radius: 2px;
+      margin-bottom: 16px;
+    }
+
+    .not-found {
+      padding: 40px;
+      text-align: center;
+      color: #666;
+    }
+
+    .not-found h2 {
+      color: #000;
+      margin: 0 0 10px 0;
+    }
+
+    @media (max-width: 768px) {
+      .detail-body {
+        flex-direction: column;
+      }
+
+      .detail-image {
+        width: 100%;
+        height: 250px;
+      }
+
+      .detail-meta {
+        flex-direction: column;
+        gap: 6px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Top header: logo | location + boroughs | faves post acct language -->
+  <div class="topbar">
+    <a href="index.html" class="topbar-logo">
+      <span class="logo-icon">☮</span>
+      craigslist
+    </a>
+    <div class="topbar-center">
+      <span class="location-icon">📍</span>
+      <span class="location-name">new york</span>
+      <span class="boroughs">
+        <a href="#">mnh</a>
+        <a href="#">brk</a>
+        <a href="#">que</a>
+        <a href="#">brx</a>
+        <a href="#">stn</a>
+        <a href="#">jsy</a>
+        <a href="#">lgi</a>
+        <a href="#">wch</a>
+        <a href="#">fct</a>
+      </span>
+    </div>
+    <div class="topbar-right">
+      <a href="#" class="nav-item faves">★ faves</a>
+      <a href="post-location.html" class="nav-item post">✎ post</a>
+      <a href="#" class="nav-item acct">👤 acct</a>
+      <select aria-label="language">
+        <option>english</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="page-layout">
+    <!-- Left sidebar -->
+    <aside class="sidebar">
+      <a href="post-location.html" class="btn-post-ad">✎ post an ad</a>
+      <div class="search-wrap">
+        <input type="search" placeholder="search craigslist" aria-label="search craigslist">
+      </div>
+      <ul class="sidebar-links">
+        <li><a href="index.html">back to homepage</a></li>
+        <li><a href="listings.html">browse all listings</a></li>
+        <li><a href="#">help, faq, abuse, legal</a></li>
+        <li><a href="#">avoid scams &amp; fraud</a></li>
+        <li><a href="#">personal safety tips</a></li>
+        <li><a href="#">about craigslist</a></li>
+      </ul>
+    </aside>
+
+    <!-- Main content -->
+    <div class="detail-container">
+      <span class="btn-back" onclick="goBack()">← back to listings</span>
+      
+      <div id="errorContainer"></div>
+      
+      <div id="loadingContainer" class="loading" style="display: none;">
+        Loading listing...
+      </div>
+
+      <div id="detailContent" style="display: none;">
+        <div class="detail-header">
+          <h1 id="listingTitle"></h1>
+          <div class="detail-meta">
+            <span class="detail-price" id="listingPrice"></span>
+            <span id="listingCategory"></span>
+            <span id="listingDate"></span>
+            <span id="listingPaidBadge"></span>
+          </div>
+        </div>
+
+        <div class="detail-body">
+          <div class="detail-image-section">
+            <div class="detail-image" id="listingImage"></div>
+          </div>
+
+          <div class="detail-content">
+            <div class="detail-section">
+              <h3>Description</h3>
+              <div class="detail-description" id="listingDescription"></div>
+            </div>
+
+            <div class="detail-section">
+              <h3>Details</h3>
+              <div>
+                <div class="detail-info-row">
+                  <span class="detail-info-label">Category:</span>
+                  <span class="detail-info-value" id="detailCategory"></span>
+                </div>
+                <div class="detail-info-row" id="detailPriceRow" style="display: none;">
+                  <span class="detail-info-label">Price:</span>
+                  <span class="detail-info-value" id="detailPrice"></span>
+                </div>
+                <div class="detail-info-row">
+                  <span class="detail-info-label">Posted:</span>
+                  <span class="detail-info-value" id="detailDate"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="contact-section">
+              <h3>Contact Information</h3>
+              <div class="contact-info">
+                <div>Email: <a href="mailto:" id="contactEmail"></a></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="notFoundContainer" class="not-found" style="display: none;">
+        <h2>Listing Not Found</h2>
+        <p>The listing you're looking for doesn't exist or has been removed.</p>
+        <a href="listings.html" style="color: #0000ff; text-decoration: underline;">Browse all listings</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    help safety privacy terms · about · © 2026 craigslist
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/detail.js"></script>
+</body>
+</html>
